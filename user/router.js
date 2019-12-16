@@ -4,6 +4,14 @@ const router = new Router();
 const User = require("./model");
 const bcrypt = require("bcrypt");
 
+router.get("/users", (request, response, next) => {
+  User.findAll()
+    .then(users => {
+      response.status(200).send(users);
+    })
+    .catch(next);
+});
+
 router.post("/user", (request, response, next) => {
   const user = {
     email: request.body.email,
