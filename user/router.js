@@ -12,14 +12,22 @@ router.get("/users", (request, response, next) => {
     .catch(next);
 });
 
-router.post("/user", (request, response, next) => {
-  const user = {
-    email: request.body.email,
-    password: bcrypt.hashSync(request.body.password, 10)
-  };
-  User.create(user)
-    .then(user => response.send(user))
-    .catch(errors => next(errors));
+router.post("/user", async (request, response, next) => {
+  try {
+    const found = await User.findOne({ where: { email: request.body.email } })
+    if(found){
+      response.status(400).send({message: 'email has already been used'})
+    } else {
+      const user = {
+        email: request.body.email,
+        password: bcrypt.hashSync(request.body.password, 10)
+      };
+      const created = await User.create(user)
+      response.send(created)
+    }
+  } catch (error) {
+    next(error)
+  }
 });
 
 module.exports = router;
