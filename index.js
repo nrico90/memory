@@ -10,6 +10,7 @@ const Sse = require("json-sse");
 const auth = require("./auth/router");
 const userRouter = require("./user/router");
 const roomFactory = require("./gameroom/router");
+const Room = require("./gameroom/model");
 
 const stream = new Sse();
 const roomRouter = roomFactory(stream);
@@ -27,8 +28,21 @@ app.get("/", (req, res) => {
   res.send("hello");
 });
 
-app.get("/stream", (req, res) => {
-  stream.init(req, res);
+app.get("/stream", async (req, res, next) => {
+  try {
+    const gamerooms = await room.findAll();
+
+    const action = {
+      type: "ALL_GAMEROOMS",
+      payload: gamerooms
+    };
+    const string = JSON.stringify(action);
+
+    stream.updateInit(string);
+    stream.init(req, res);
+  } catch (error) {
+    next(error);
+  }
 });
 
 app.use(auth);
