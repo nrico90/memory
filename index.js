@@ -9,9 +9,9 @@ const bodyParser = require("body-parser");
 const Sse = require("json-sse");
 const auth = require("./auth/router");
 const userRouter = require("./user/router");
-const roomFactory = require("./gameroom/router");
-const Room = require("./gameroom/model");
 
+const room = require("./gameroom/model");
+const roomFactory = require("./gameroom/router");
 const stream = new Sse();
 const roomRouter = roomFactory(stream);
 
