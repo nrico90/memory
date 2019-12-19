@@ -1,19 +1,18 @@
 const { Router } = require("express");
 const Room = require("./model");
 const User = require("../user/model");
+const authMiddleware = require("../auth/middleware");
 
 function factory(stream) {
   const router = new Router();
 
   //nuevo, para unirse a un room
-  router.put("/join", async (req, res, next) => {
+  router.put("/join", authMiddleware, async (req, res, next) => {
     try {
-      const user = await User.update(
-        {
-          roomId: req.body.roomId
-        },
-        { where: { id: req.body.userId } }
-      );
+      const { user } = req;
+      const updatedUser = await user.update({
+        roomId: req.body.room
+      });
 
       const gamerooms = await Room.findAll({
         include: [User]
@@ -28,7 +27,7 @@ function factory(stream) {
 
       stream.send(string);
 
-      response.send(user);
+      res.send(user);
     } catch (error) {
       next(error);
     }
