@@ -49,6 +49,7 @@ function factory(stream) {
       next(error);
     }
   });
+  return router;
 }
 
 module.exports = factory;

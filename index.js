@@ -26,10 +26,11 @@ app.use(corsMiddleware);
 const stream = new Sse();
 
 const roomRouter = roomFactory(stream);
-app.use(roomRouter);
+// app.use(roomRouter);
 
 const userRouter = userFactory(stream);
 app.use(userRouter);
+app.use(auth);
 
 app.get("/", (req, res) => {
   stream.send("test");
@@ -52,7 +53,5 @@ app.get("/stream", async (req, res, next) => {
     next(error);
   }
 });
-
-//app.use(auth);
 
 app.listen(port, () => console.log(`listening on ${port}`));
