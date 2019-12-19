@@ -26,7 +26,7 @@ app.use(corsMiddleware);
 const stream = new Sse();
 
 const roomRouter = roomFactory(stream);
-// app.use(roomRouter);
+app.use(roomRouter);
 
 const userRouter = userFactory(stream);
 app.use(userRouter);
