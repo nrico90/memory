@@ -4,7 +4,7 @@ const databaseURL =
   "postgres://postgres:secret@localhost:5432/postgres";
 const db = new Sequelize(databaseURL);
 
-db.sync()
+db.sync({ force: true })
   .then(() => console.log("the database schema has been update"))
   .catch(console.error);
 
