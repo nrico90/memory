@@ -17,11 +17,11 @@ const port = process.env.PORT || 4000;
 
 const auth = require("./auth/router");
 
-const jsonParser = bodyParser.json();
-app.use(jsonParser);
-
 const corsMiddleware = cors();
 app.use(corsMiddleware);
+
+const jsonParser = bodyParser.json();
+app.use(jsonParser);
 
 const stream = new Sse();
 
