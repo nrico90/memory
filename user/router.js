@@ -6,13 +6,13 @@ const User = require("./model");
 function factory(stream) {
   const router = new Router();
 
-  router.get("/users", (request, response, next) => {
-    User.findAll()
-      .then(users => {
-        response.status(200).send(users);
-      })
-      .catch(next);
-  });
+  // router.get("/users", (request, response, next) => {
+  //   User.findAll()
+  //     .then(users => {
+  //       response.status(200).send(users);
+  //     })
+  //     .catch(next);
+  // });
 
   router.post("/user", async (request, response, next) => {
     try {
@@ -30,6 +30,7 @@ function factory(stream) {
           const jwt = toJWT({ userId: user.id });
           response.json({ jwt, email: user.email });
         });
+        response.send(user);
       }
     } catch (error) {
       next(error);
