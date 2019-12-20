@@ -54,4 +54,15 @@ app.get("/stream", async (req, res, next) => {
   }
 });
 
+//GameMemory
+app.get("/number", (req, res) => {
+  let mode = req.query.mode;
+  let numbers = [];
+  while (numbers.length < Number(mode)) {
+    var number = Math.floor(Math.random() * 100) + 1;
+    if (numbers.indexOf(number) === -1) numbers.push(number);
+  }
+  res.send({ randomArray: numbers });
+});
+
 app.listen(port, () => console.log(`listening on ${port}`));
